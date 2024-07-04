@@ -43,7 +43,7 @@ def download_videos(video_ids):
 
     if not os.path.exists(log_path):
         os.mkdir(log_path)
-        with open(log_file, 'w') as file:
+        with open(log_file, 'w', newline='') as file:
             csv.writer(file, delimiter=',').writerow(['Placeholder'])
    
     with open(log_file, 'r') as file:
@@ -57,8 +57,8 @@ def download_videos(video_ids):
     for video_id in video_ids:
         try:
 
-            if video_id in ids:
-                pass
+            if [video_id] in ids:
+                print('Video already downloaded')
            
             else:
                 url = f"https://www.youtube.com/watch?v={video_id}"
@@ -66,13 +66,14 @@ def download_videos(video_ids):
                 stream = yt.streams.filter(progressive=True, file_extension="mp4").order_by("resolution").desc().first()
                 stream.download(output_path=r'C:\YT Playlist')
                 print(f"Downloaded: {yt.title}")
-                videos_to_append.append(video_id)
+                videos_to_append.append([video_id])
 
         except Exception as e:
             print(f"Failed to download {video_id}: {e}")
-    with open(log_file, 'a') as file:
+
+    with open(log_file, 'a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(videos_to_append)
+        writer.writerows(videos_to_append)
 
 video_ids = get_playlist(PLAYLIST_ID)
 download_videos(video_ids)
