@@ -44,11 +44,9 @@ def download_videos(video_ids):
     if not os.path.exists(log_path):
         os.mkdir(log_path)
         with open(log_file, 'w', newline='') as file:
-            csv.writer(file, delimiter=',').writerow(['Placeholder'])
-   
+            pass
     with open(log_file, 'r') as file:
         reader = csv.reader(file)
-        next(reader)
         for row in reader:
             ids.append(row)
 
